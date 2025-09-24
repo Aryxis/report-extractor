@@ -50,15 +50,13 @@ for page in all_pages[1:]:  # 封面页特殊处理
         if not is_whole:
             continue  # 两个部分间距太远
 
+        # 仅当"第X节"出现时, 才插入空格
         text = lines[0]["text"]
-        if len(lines) > 1:
-            if text.isdigit() and lines[1]["text"][0] in TitleType.DOT:
-                text += lines[1]["text"]  # 处理 "1、标题" 的情况
-            else:
-                text += " " + lines[1]["text"]
-        text += " ".join(line["text"] for line in lines[2:])
+        if len(lines) > 1 and TitleType.is_root(text):
+            text += " "
+        text += "".join(line["text"] for line in lines[1:])
 
-        if text.find("同时按照国际会计准则与按照中国会计准则") != -1:
+        if text.find("管理层讨论与分析") != -1:
             pass  # for debugging
         if text.isdigit():
             continue  # 纯数字, 认为是页码

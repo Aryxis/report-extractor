@@ -10,6 +10,8 @@ class OutlineTree:
     树包含根节点, 提供添加节点和遍历节点的方法.
     """
 
+    MAX_LEVEL = 2
+
     def __init__(self, root_title: str) -> None:
         self.root = TitleNode(
             size=float("inf"),  # 根节点字号设为无穷大, 便于比较
@@ -27,6 +29,8 @@ class OutlineTree:
         def _insert(
             level: int, parent: "TitleNode | None", prev: "TitleNode | None"
         ) -> None:
+            if level > OutlineTree.MAX_LEVEL:
+                return  # 超过最大层级, 忽略
             cur_node = TitleNode(
                 title_type=ttype,
                 size=size,
@@ -60,20 +64,20 @@ class OutlineTree:
                 )
                 return
         else:  # 提取到了标题的某些特征
-            if ttype == self._last_node.ttype:
-                # 和上一个节点样式相同, 同级
-                _insert(
-                    level=self._last_node.level,
-                    parent=self._last_node.parent,
-                    prev=self._last_node,
-                )
-                return
             if size < self._last_node.size:
                 # 字体更小, 视为下一级
                 _insert(
                     level=self._last_node.level + 1,
                     parent=self._last_node,
                     prev=None,
+                )
+                return
+            if ttype == self._last_node.ttype:
+                # 和上一个节点样式相同, 同级
+                _insert(
+                    level=self._last_node.level,
+                    parent=self._last_node.parent,
+                    prev=self._last_node,
                 )
                 return
             if size == self._last_node.size:

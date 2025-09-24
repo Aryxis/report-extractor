@@ -101,3 +101,8 @@ class TitleType:
         if isinstance(other, int):
             return self._id == other
         return self._id == other._id
+
+    @staticmethod
+    def is_root(title: str) -> bool:
+        """判断标题是否为根标题"""
+        return re.search(TitleType.RE_ROOT, title) is not None
