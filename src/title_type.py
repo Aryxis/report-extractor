@@ -17,6 +17,7 @@ class TitleType:
 
     # 预定义一些组成标题的部分
     ZH_NUM = r"零一二三四五六七八九十"
+    DOT = r"、."
     RE_SPACE = r"\s"
     RE_L_PAREN = r"[(（]"
     RE_R_PAREN = r"[)）]"
@@ -27,7 +28,7 @@ class TitleType:
     RE_ROOT = rf"^第{RE_ZH_NUM}[节章]"
     RE_FULL_PAREN = rf"^({RE_L_PAREN}.*?{RE_R_PAREN})"  # 捕获以计算长度
     RE_RIGHT_PAREN = rf"^.*?{RE_R_PAREN}"
-    RE_DOT = r"[、.]"
+    RE_DOT = rf"[{DOT}]"
 
     # 标题类型的常量
     TITLE_ROOT = 1  # 第X章
@@ -39,9 +40,12 @@ class TitleType:
     # 标题前缀的最大长度, 前缀是正文以外的部分
     MAX_PRE_LEN = 5
 
-    def __init__(self, title: str) -> None:
-        title_pre = self._find_title_prefix(title)
-        self._id = self._calc_title_id(title_pre)
+    def __init__(self, title: str, is_root: bool = False) -> None:
+        if is_root:
+            self._id = -1
+        else:
+            title_pre = self._find_title_prefix(title)
+            self._id = self._calc_title_id(title_pre)
 
     def _find_title_prefix(self, title: str) -> str:
         """
@@ -92,6 +96,8 @@ class TitleType:
         return res
 
     def __eq__(self, other: object) -> bool:
-        if not isinstance(other, TitleType):
+        if not (isinstance(other, TitleType) or isinstance(other, int)):
             return False
+        if isinstance(other, int):
+            return self._id == other
         return self._id == other._id
