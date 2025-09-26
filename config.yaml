@@ -1,0 +1,115 @@
+# chapters.yaml
+# 指定需要提取的章节结构（树形）
+
+# 数据结构:
+# Node: { name: string, aliases: [], children: Node[] }
+# aliases: 该节点的别名，可选
+
+- name: 管理层讨论与分析
+  aliases: [经营情况讨论与分析]
+  children:
+    - name: 主要控股参股公司分析
+      aliases: []
+      children: []
+- name: 重要事项
+  aliases: []
+  children:
+    - name: 承诺事项履行情况
+      aliases: []
+      children: []
+    - name: 聘任、解聘会计师事务所情况
+      aliases: []
+      children: []
+    - name: 重大诉讼、仲裁事项
+      aliases: []
+      children: []
+    - name: 重大合同及其履行情况
+      aliases: []
+      children: []
+    - name: 其他重大事项的说明
+      aliases: []
+      children: []
+    - name: 公司子公司重大事项
+      aliases: []
+      children: []
+- name: 股份变动及股东情况
+  aliases: [普通股股份变动及股东情况]
+  children:
+    - name: 股份变动情况
+      aliases: []
+      children: []
+    - name: 股东和实际控制人情况
+      aliases: []
+      children: []
+- name: 优先股相关情况
+  aliases: []
+  children:
+    - name: 优先股股东
+      aliases: []
+      children: []
+- name: 债券相关情况
+  aliases: []
+  children:
+    - name: 企业债券
+      aliases: []
+      children: []
+    - name: 公司债券
+      aliases: []
+      children: []
+    - name: 非金融企业债务融资工具
+      aliases: []
+      children: []
+    - name: 可转换公司债券
+      aliases: []
+      children: []
+    - name: 报告期内债券受托管理人履行职责的情况
+      aliases: []
+      children: []
+    - name: 其他事项
+      aliases: []
+      children: []
+    - name: 公司债券基本信息
+      aliases: []
+      children: []
+    - name: 债券受托管理人和资信评级机构信息
+      aliases: []
+      children: []
+    - name: 公司债券是否存在保证人
+      aliases: []
+      children: []
+- name: 财务报告
+  aliases: []
+  children:
+    - name: 财务报表附注
+      aliases: []
+      children:
+        - name: 企业合并及合并财务报表
+          aliases: []
+          children:
+            - name: 子公司情况
+              aliases: []
+              children: []
+        - name: 合并财务报表项目附注
+          aliases: []
+          children:
+            - name: 应收款项
+              aliases: []
+              children: []
+            - name: 长期股权投资
+              aliases: []
+              children: []
+        - name: 母公司财务报表项目注释
+          aliases: []
+          children:
+            - name: 长期股权投资
+              aliases: []
+              children: []
+        - name: 在其他主体中权益的披露
+          aliases: []
+          children: []
+        - name: 关联方关系及其交易
+          aliases: [关联方及关联交易]
+          children: []
+        - name: 承诺及或有事项
+          aliases: []
+          children: []

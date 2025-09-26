@@ -19,7 +19,7 @@ MAX_HEADER_HEIGHT = 80  # 页眉的最大高度
 
 all_pages = []
 
-with open("src/t.json", "r", encoding="utf-8") as f:
+with open("src/sxzq.json", "r", encoding="utf-8") as f:
     all_pages = json.load(f)
 
 
@@ -71,5 +71,5 @@ for page in all_pages[1:]:  # 封面页特殊处理
         outlines.add_node(first_size, text, ttype, centered)
 
 # outlines.print_dump()
-with open("src/outline.txt", "w", encoding="utf-8") as f:
+with open("src/outline2.txt", "w", encoding="utf-8") as f:
     f.write(outlines.str_dump())
