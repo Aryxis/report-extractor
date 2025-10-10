@@ -102,6 +102,10 @@ class TitleType:
             return self._id == other
         return self._id == other._id
 
+    def empty(self) -> bool:
+        """判断标题类型是否为空, 即没有任何标题特征"""
+        return self._id == 0
+
     @staticmethod
     def is_root(title: str) -> bool:
         """判断标题是否为根标题"""

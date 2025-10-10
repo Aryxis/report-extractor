@@ -35,6 +35,7 @@ for page in all_pages[1:]:  # 封面页特殊处理
     width = page["width"]
     sizes_count = page["sizes_count"]
     for block in page["blocks"]:
+        bbox = block["bbox"]
         lines = block["lines"]
         first_size = lines[0]["size"]
         if (
@@ -64,11 +65,11 @@ for page in all_pages[1:]:  # 封面页特殊处理
             continue  # 标题过长
         ttype = TitleType(text)
         centered = is_centered(width, block["bbox"][0], block["bbox"][2])
-        if ttype == 0 and not centered:
+        if ttype.empty() and not centered:
             continue  # 无样式且不居中, 认为是正文
 
         # 认为该行是标题, 添加到大纲树中
-        outlines.add_node(first_size, text, ttype, centered)
+        outlines.add_node(first_size, bbox[1], bbox[3], text, ttype, centered)
 
 # outlines.print_dump()
 with open("src/outline2.txt", "w", encoding="utf-8") as f:

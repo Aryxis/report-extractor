@@ -23,7 +23,13 @@ class OutlineTree:
         self._last_node = self.root
 
     def add_node(
-        self, size: float, text: str, ttype: "TitleType", is_centered: bool
+        self,
+        size: float,
+        y0: float,
+        y1: float,
+        text: str,
+        ttype: "TitleType",
+        is_centered: bool,
     ) -> None:
         # 预定义的处理函数
         def _insert(
@@ -34,6 +40,8 @@ class OutlineTree:
             cur_node = TitleNode(
                 title_type=ttype,
                 size=size,
+                y0=y0,
+                y1=y1,
                 text=text,
                 level=level,
                 parent=parent,
@@ -43,11 +51,11 @@ class OutlineTree:
                 parent.children.append(cur_node)
             self._last_node = cur_node
 
-        if ttype == 0:
+        if ttype.empty():
             if not is_centered:
                 # 非居中, 无标题特征, 视为正文, 忽略
                 return
-            if self._last_node.ttype == 0:
+            if self._last_node.ttype.empty():
                 # 上一个节点和该节点样式相同, 同级
                 _insert(
                     level=self._last_node.level,
