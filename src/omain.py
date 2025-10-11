@@ -32,6 +32,7 @@ def is_centered(width: float, x0: float, x1: float) -> bool:
 outlines = OutlineTree("Report")
 for page in all_pages[1:]:  # 封面页特殊处理
     total_length = page["total_length"]
+    page_no = page["page_no"]
     width = page["width"]
     sizes_count = page["sizes_count"]
     for block in page["blocks"]:
@@ -69,8 +70,8 @@ for page in all_pages[1:]:  # 封面页特殊处理
             continue  # 无样式且不居中, 认为是正文
 
         # 认为该行是标题, 添加到大纲树中
-        outlines.add_node(first_size, bbox[1], bbox[3], text, ttype, centered)
+        outlines.add_node(first_size, bbox[1], bbox[3], page_no, text, ttype, centered)
 
 # outlines.print_dump()
 with open("src/outline2.txt", "w", encoding="utf-8") as f:
-    f.write(outlines.str_dump())
+    f.write(outlines.str_dump(True))

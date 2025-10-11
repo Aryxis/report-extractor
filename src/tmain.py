@@ -66,7 +66,7 @@ def process():
 
         all_pages.append(
             {
-                "page_number": pn + 1,
+                "page_no": pn + 1,
                 "width": round(page.rect.width, 2),
                 "blocks": cropped_blocks,
                 "sizes_count": sizes_count,

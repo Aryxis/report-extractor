@@ -16,6 +16,7 @@ class TitleNode:
         size: float,
         y0: float = 0.0,
         y1: float = 0.0,
+        page_no: int = 0,
         text: str = "",
         level: int = 0,
         parent: "TitleNode | None" = None,
@@ -25,6 +26,7 @@ class TitleNode:
         self.size = size
         self.y0 = y0  # 标题底部的 y 坐标
         self.y1 = y1  # 标题顶部的 y 坐标
+        self.page_no = page_no
         self.text = text
         self.level = level
         self.parent = parent

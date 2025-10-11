@@ -27,6 +27,7 @@ class OutlineTree:
         size: float,
         y0: float,
         y1: float,
+        page_no: int,
         text: str,
         ttype: "TitleType",
         is_centered: bool,
@@ -42,6 +43,7 @@ class OutlineTree:
                 size=size,
                 y0=y0,
                 y1=y1,
+                page_no=page_no,
                 text=text,
                 level=level,
                 parent=parent,
@@ -131,21 +133,27 @@ class OutlineTree:
                     prev=None,
                 )
 
-    def print_dump(self) -> None:
+    def print_dump(self, with_range: bool = False) -> None:
         """打印目录树, 用于调试."""
 
         def _dump(node: TitleNode, indent: int) -> None:
-            print(" " * indent + f"[L{node.level}] {node.text}")
+            print(" " * indent + f"[L{node.level}] {node.text}", end="")
+            if with_range:
+                print(f" (P{node.page_no} Y[{node.y0}, {node.y1}])", end="")
+            print()
             for child in node.children:
                 _dump(child, indent + 2)
 
         _dump(self.root, 0)
 
-    def str_dump(self) -> str:
+    def str_dump(self, with_range: bool = False) -> str:
         """返回目录树的字符串表示, 用于调试."""
 
         def _dump(node: TitleNode, indent: int) -> str:
-            result = " " * indent + f"[L{node.level}] {node.text}\n"
+            result = " " * indent + f"[L{node.level}] {node.text}"
+            if with_range:
+                result += f" (P{node.page_no} Y[{node.y0}, {node.y1}])"
+            result += "\n"
             for child in node.children:
                 result += _dump(child, indent + 2)
             return result
