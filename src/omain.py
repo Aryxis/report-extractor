@@ -2,6 +2,8 @@ import json
 
 from title_type import TitleType
 from outline_tree import OutlineTree
+from target_tree import TargetTree
+from title_node import TitleNode
 
 # outline main
 
@@ -73,5 +75,19 @@ for page in all_pages[1:]:  # 封面页特殊处理
         outlines.add_node(first_size, bbox[1], bbox[3], page_no, text, ttype, centered)
 
 # outlines.print_dump()
-with open("src/outline2.txt", "w", encoding="utf-8") as f:
-    f.write(outlines.str_dump(True))
+
+# with open("src/outline2.txt", "w", encoding="utf-8") as f:
+#     f.write(outlines.str_dump(True))
+
+
+def traverse_and_match(node: TitleNode):
+    if target.match_subtree(node):
+        print(f"Matched: {node.text} (Page {node.page_no})")
+    for child in node.children:
+        traverse_and_match(child)
+
+
+target = TargetTree()
+
+for nd in outlines.root.children:
+    traverse_and_match(nd)

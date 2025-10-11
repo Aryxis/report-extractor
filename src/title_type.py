@@ -43,6 +43,7 @@ class TitleType:
     def __init__(self, title: str, is_root: bool = False) -> None:
         if is_root:
             self._id = -1
+            self.prefix_length = -1
         else:
             title_pre = self._find_title_prefix(title)
             self._id = self._calc_title_id(title_pre)
@@ -71,6 +72,7 @@ class TitleType:
         if match_space:
             length = min(length, match_space.start() + 1)
 
+        self.prefix_length = length  # 记录前缀长度
         return title[:length]
 
     def _calc_title_id(self, prefix: str) -> int:

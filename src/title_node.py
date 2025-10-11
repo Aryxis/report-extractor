@@ -32,3 +32,7 @@ class TitleNode:
         self.parent = parent
         self.prev = prev
         self.children: List["TitleNode"] = []
+
+    def get_main_text(self) -> str:
+        """获取标题文本."""
+        return self.text[self.ttype.prefix_length :]
