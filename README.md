@@ -15,4 +15,5 @@
   - [x] 页码 y 坐标的提取
   - [x] match 后返回 ContentRange
   - [ ] 根据坐标完成信息提取和整合
+  - [ ] 将 ContentRange 的 start_y 从 y0 改为 y1
 - [ ] 用户友好界面

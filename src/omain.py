@@ -1,9 +1,11 @@
 import json
 
+import pdf2docx
 from title_type import TitleType
 from outline_tree import OutlineTree
 from target_tree import TargetTree
 from title_node import TitleNode
+import os
 
 # outline main
 
@@ -80,6 +82,9 @@ with open("src/outline2.txt", "w", encoding="utf-8") as f:
     f.write(outlines.str_dump(with_range=False))
 
 
+cr_list = []  # 存储所有匹配到的内容范围
+
+
 def traverse_and_match(node: TitleNode):
     if cr := target.match_subtree(node):
         # print(f"Matched: {node.text} (Page {node.page_no})")
@@ -87,6 +92,7 @@ def traverse_and_match(node: TitleNode):
             f"Matched: {node.text} (Page {node.page_no}) -> "
             f"Range: Page {cr.start_page} y={cr.start_y} to Page {cr.end_page} y={cr.end_y}"
         )
+        cr_list.append(cr)
     for child in node.children:
         traverse_and_match(child)
 
@@ -95,3 +101,45 @@ target = TargetTree()
 
 for nd in outlines.root.children:
     traverse_and_match(nd)
+
+print()
+print("---------- Extraction Results ----------")
+print()
+
+
+def print_tab_table(t: list) -> None:
+    for row in t:
+        for cell in row:
+            print(cell.strip() if cell else "", end="\t")
+        print()
+    print()
+
+
+# print("Current working directory:", os.getcwd())
+
+import logging
+
+__import__("sys").stdout = open("out.txt", "w", encoding="utf-8")
+
+
+logging.disable(logging.CRITICAL)
+
+pdf_file = "input_pdf/002500_山西证券_2024.pdf"
+
+cv = pdf2docx.Converter(pdf_file)
+
+count = 5
+
+for cr in cr_list[:count]:
+    cv.extract_tables(start=cr.start_page, end=cr.end_page, filename=None)
+    for i in range(cr.start_page, cr.end_page + 1):
+        print(f"--- Page {i} ---")
+        page = cv.pages[i]
+        secs = page.sections
+        for sec in secs:
+            for col in sec:
+                for blk in col.blocks:
+                    if isinstance(blk, pdf2docx.table.TableBlock.TableBlock):
+                        print_tab_table(blk.text)
+                    elif isinstance(blk, pdf2docx.text.TextBlock.TextBlock):
+                        print(blk.raw_text)
