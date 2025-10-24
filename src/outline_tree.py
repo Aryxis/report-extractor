@@ -10,7 +10,7 @@ class OutlineTree:
     树包含根节点, 提供添加节点和遍历节点的方法.
     """
 
-    MAX_LEVEL = 2
+    MAX_LEVEL = 3
 
     def __init__(self, root_title: str) -> None:
         self.root = TitleNode(
@@ -33,9 +33,7 @@ class OutlineTree:
         is_centered: bool,
     ) -> None:
         # 预定义的处理函数
-        def _insert(
-            level: int, parent: "TitleNode | None", prev: "TitleNode | None"
-        ) -> None:
+        def _insert(level: int, parent: "TitleNode | None", pos: int) -> None:
             if level > OutlineTree.MAX_LEVEL:
                 return  # 超过最大层级, 忽略
             cur_node = TitleNode(
@@ -47,12 +45,15 @@ class OutlineTree:
                 text=text,
                 level=level,
                 parent=parent,
-                prev=prev,
+                pos=pos,
             )
             if parent:
                 parent.children.append(cur_node)
             self._last_node = cur_node
 
+        last_parent = self._last_node.parent
+        children = last_parent.children if last_parent else None
+        position = len(children) if children else 0
         if ttype.empty():
             if not is_centered:
                 # 非居中, 无标题特征, 视为正文, 忽略
@@ -61,8 +62,8 @@ class OutlineTree:
                 # 上一个节点和该节点样式相同, 同级
                 _insert(
                     level=self._last_node.level,
-                    parent=self._last_node.parent,
-                    prev=self._last_node,
+                    parent=last_parent,
+                    pos=position,
                 )
                 return
             else:
@@ -70,7 +71,7 @@ class OutlineTree:
                 _insert(
                     level=self._last_node.level + 1,
                     parent=self._last_node,
-                    prev=None,
+                    pos=0,
                 )
                 return
         else:  # 提取到了标题的某些特征
@@ -79,27 +80,26 @@ class OutlineTree:
                 _insert(
                     level=self._last_node.level + 1,
                     parent=self._last_node,
-                    prev=None,
+                    pos=0,
                 )
                 return
             if ttype == self._last_node.ttype:
                 # 和上一个节点样式相同, 同级
                 _insert(
                     level=self._last_node.level,
-                    parent=self._last_node.parent,
-                    prev=self._last_node,
+                    parent=last_parent,
+                    pos=position,
                 )
                 return
             if size == self._last_node.size:
+                assert last_parent
                 # 字体相同
-                last_parent = self._last_node.parent
-                assert last_parent is not None
                 if size == last_parent.size or ttype == last_parent.ttype:
                     # 和父节点字体相同或样式相同, 视为和父节点同级
                     _insert(
                         level=last_parent.level,
                         parent=last_parent.parent,
-                        prev=last_parent,
+                        pos=position,
                     )
                     return
                 else:
@@ -107,7 +107,7 @@ class OutlineTree:
                     _insert(
                         level=self._last_node.level + 1,
                         parent=self._last_node,
-                        prev=None,
+                        pos=0,
                     )
                     return
             # 字体更大, 向上查找同级节点
@@ -122,7 +122,7 @@ class OutlineTree:
                 _insert(
                     level=cur_node.level,
                     parent=cur_node.parent,
-                    prev=cur_node,
+                    pos=len(cur_node.parent.children) if cur_node.parent else 0,
                 )
                 return
             elif size <= cur_node.size:
@@ -130,7 +130,7 @@ class OutlineTree:
                 _insert(
                     level=cur_node.level + 1,
                     parent=cur_node,
-                    prev=None,
+                    pos=0,
                 )
 
     def print_dump(self, with_range: bool = False) -> None:

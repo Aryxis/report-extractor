@@ -9,5 +9,10 @@
 - [x] 在 `TitleNode` 中添加章节范围
   - [x] 在一页中区分表格和正文 (使用 bbox)
   - [x] 使用 `pdf2docx` 提取表格
-- [ ] 识别并读取 `config.yaml` 文件, 建立数据结构
+- [x] 识别并读取 `config.yaml` 文件, 建立数据结构
 - [ ] 书写搜索和信息提取逻辑
+  - [x] header y 坐标的提取
+  - [x] 页码 y 坐标的提取
+  - [x] match 后返回 ContentRange
+  - [ ] 根据坐标完成信息提取和整合
+- [ ] 用户友好界面

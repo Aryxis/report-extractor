@@ -76,7 +76,7 @@ def process():
 
 
 pdf_path = "input_pdf/002500_山西证券_2024.pdf"
-# pdf_path = "input_pdf/300059_东方财富_2024.pdf"
+pdf_path = "input_pdf/300059_东方财富_2024.pdf"
 
 doc = pymupdf.open(pdf_path)
 
@@ -89,7 +89,7 @@ process()
 end_time = time.time()
 print(f"Processed {len(doc)} pages in {end_time - start_time:.2f}s.")
 
-with open("src/sxzq.json", "w", encoding="utf-8") as f:
+with open("src/dfcf.json", "w", encoding="utf-8") as f:
     json.dump(all_pages, f, ensure_ascii=False, indent=2)
 
 # print(page_dict)

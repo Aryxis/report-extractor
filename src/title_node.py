@@ -20,7 +20,7 @@ class TitleNode:
         text: str = "",
         level: int = 0,
         parent: "TitleNode | None" = None,
-        prev: "TitleNode | None" = None,
+        pos: int = 0,
     ) -> None:
         self.ttype = title_type
         self.size = size
@@ -30,7 +30,7 @@ class TitleNode:
         self.text = text
         self.level = level
         self.parent = parent
-        self.prev = prev
+        self.pos = pos
         self.children: List["TitleNode"] = []
 
     def get_main_text(self) -> str:

@@ -9,7 +9,7 @@ from title_node import TitleNode
 
 # 最大标题级别, 一般为 3
 # <XX 公司 XX 年年度报告> 为 0 级标题, 以此类推
-MAX_TITLE_LVL = 3
+MAX_TITLE_LVL = 4
 MIN_TITLE_SIZE = 10.0  # 标题的字号最小值, 防止有些低频率的小字号被误判为标题
 MAX_TITLE_LENGTH = 50  # 标题的最大长度, 防止某些长段落被误判为标题
 MIN_TOTAL_LENGTH = 30  # 标题的字号所对应的文本总长度下限 (防止"稀有"字号)
@@ -76,13 +76,17 @@ for page in all_pages[1:]:  # 封面页特殊处理
 
 # outlines.print_dump()
 
-# with open("src/outline2.txt", "w", encoding="utf-8") as f:
-#     f.write(outlines.str_dump(True))
+with open("src/outline2.txt", "w", encoding="utf-8") as f:
+    f.write(outlines.str_dump(with_range=False))
 
 
 def traverse_and_match(node: TitleNode):
-    if target.match_subtree(node):
-        print(f"Matched: {node.text} (Page {node.page_no})")
+    if cr := target.match_subtree(node):
+        # print(f"Matched: {node.text} (Page {node.page_no})")
+        print(
+            f"Matched: {node.text} (Page {node.page_no}) -> "
+            f"Range: Page {cr.start_page} y={cr.start_y} to Page {cr.end_page} y={cr.end_y}"
+        )
     for child in node.children:
         traverse_and_match(child)
 
